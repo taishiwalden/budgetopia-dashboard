@@ -22,7 +22,7 @@ const Expenses = () => {
   ];
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <h1 className="text-3xl font-bold mb-6">Expenses</h1>
       <Card>
         <CardHeader>

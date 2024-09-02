@@ -21,7 +21,6 @@ const Investments = () => {
   };
 
   const handleUpdateChart = () => {
-    // Normalize percentages to ensure they sum up to 100%
     const total = investmentData.reduce((sum, item) => sum + item.value, 0);
     const normalizedData = investmentData.map(item => ({
       ...item,
@@ -31,7 +30,7 @@ const Investments = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div>
       <h1 className="text-3xl font-bold mb-6">Investments</h1>
       <Card>
         <CardHeader>
