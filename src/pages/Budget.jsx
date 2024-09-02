@@ -1,18 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
 
 const Budget = () => {
+  const [annualIncome, setAnnualIncome] = useState(50000);
+  const [afterTaxIncome, setAfterTaxIncome] = useState({
+    monthly: 0,
+    federal: 0,
+    state: 0,
+    fica: 0
+  });
+
+  const calculateAfterTaxIncome = (income) => {
+    // This is a simplified tax calculation and should be adjusted for accuracy
+    const federalTaxRate = 0.22; // Assuming 22% federal tax rate
+    const stateTaxRate = 0.05; // Assuming 5% state tax rate
+    const ficaTaxRate = 0.0765; // 7.65% for Social Security and Medicare
+
+    const federalTax = income * federalTaxRate;
+    const stateTax = income * stateTaxRate;
+    const ficaTax = income * ficaTaxRate;
+
+    const totalTax = federalTax + stateTax + ficaTax;
+    const afterTaxAnnual = income - totalTax;
+    const afterTaxMonthly = afterTaxAnnual / 12;
+
+    return {
+      monthly: afterTaxMonthly.toFixed(2),
+      federal: federalTax.toFixed(2),
+      state: stateTax.toFixed(2),
+      fica: ficaTax.toFixed(2)
+    };
+  };
+
+  useEffect(() => {
+    const result = calculateAfterTaxIncome(annualIncome);
+    setAfterTaxIncome(result);
+  }, [annualIncome]);
+
+  const handleIncomeChange = (e) => {
+    setAnnualIncome(Number(e.target.value));
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Budget</h1>
-      <Card>
-        <CardHeader>
-          <CardTitle>Budget Overview</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p>Budget details and management tools will be implemented here.</p>
-        </CardContent>
-      </Card>
+      <div className="space-y-6">
+        <Card>
+          <CardHeader>
+            <CardTitle>Income Information</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div>
+                <label htmlFor="annual-income" className="block text-sm font-medium text-gray-700">
+                  Annual Income
+                </label>
+                <Input
+                  id="annual-income"
+                  type="number"
+                  value={annualIncome}
+                  onChange={handleIncomeChange}
+                  className="mt-1"
+                />
+              </div>
+              <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome))}>
+                Calculate After-Tax Income
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>After-Tax Income Breakdown</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-2">
+              <p><strong>Monthly After-Tax Income:</strong> ${afterTaxIncome.monthly}</p>
+              <p><strong>Federal Tax (Annual):</strong> ${afterTaxIncome.federal}</p>
+              <p><strong>State Tax (Annual):</strong> ${afterTaxIncome.state}</p>
+              <p><strong>FICA Tax (Annual):</strong> ${afterTaxIncome.fica}</p>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
   );
 };
