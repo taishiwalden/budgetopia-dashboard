@@ -73,7 +73,7 @@ const Investments = () => {
                       outerRadius={80}
                       fill="#8884d8"
                       dataKey="value"
-                      label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      label={({ name, value }) => `${name} ${value.toFixed(1)}%`}
                     >
                       {investmentData.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
@@ -117,7 +117,7 @@ const Investments = () => {
                 <ul className="list-disc list-inside">
                   {investmentData.map((item, index) => (
                     <li key={index}>
-                      {item.name}: {item.risk}/10 (Weight: {item.value.toFixed(2)}%)
+                      {item.name}: {item.risk}/10 (Weight: {item.value.toFixed(1)}%)
                     </li>
                   ))}
                 </ul>
