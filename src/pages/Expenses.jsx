@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -10,29 +10,54 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+
+const initialExpenses = [
+  { category: 'Rent', amount: 1500 },
+  { category: 'Utilities', amount: 200 },
+  { category: 'Transportation', amount: 300 },
+  { category: 'Healthcare', amount: 150 },
+  { category: 'Company Expenses', amount: 500 },
+  { category: 'Shopping', amount: 400 },
+  { category: 'Savings', amount: 1000 },
+  { category: 'Investments', amount: 800 },
+];
+
+const fetchExpenses = async () => {
+  // In a real app, this would be an API call
+  return initialExpenses;
+};
 
 const Expenses = () => {
-  const [expensesData, setExpensesData] = useState([
-    { category: 'Rent', amount: 1500 },
-    { category: 'Utilities', amount: 200 },
-    { category: 'Transportation', amount: 300 },
-    { category: 'Healthcare', amount: 150 },
-    { category: 'Company Expenses', amount: 500 },
-    { category: 'Shopping', amount: 400 },
-    { category: 'Savings', amount: 1000 },
-    { category: 'Investments', amount: 800 },
-  ]);
+  const queryClient = useQueryClient();
+  const { data: expensesData, isLoading } = useQuery({
+    queryKey: ['expenses'],
+    queryFn: fetchExpenses,
+    initialData: initialExpenses,
+  });
+
+  const updateExpensesMutation = useMutation({
+    mutationFn: (newExpenses) => {
+      // In a real app, this would be an API call to update the expenses
+      return Promise.resolve(newExpenses);
+    },
+    onSuccess: (newExpenses) => {
+      queryClient.setQueryData(['expenses'], newExpenses);
+    },
+  });
 
   const handleAmountChange = (index, newAmount) => {
-    const updatedExpenses = [...expensesData];
-    updatedExpenses[index].amount = Number(newAmount);
-    setExpensesData(updatedExpenses);
+    const updatedExpenses = expensesData.map((expense, i) => 
+      i === index ? { ...expense, amount: Number(newAmount) } : expense
+    );
+    updateExpensesMutation.mutate(updatedExpenses);
   };
 
   const handleUpdateChart = () => {
-    // In a real application, you might want to save this data to a backend
     console.log("Updated expenses:", expensesData);
   };
+
+  if (isLoading) return <div>Loading...</div>;
 
   return (
     <div>

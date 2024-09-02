@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
+import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
   const investmentData = [
@@ -10,16 +11,20 @@ const Home = () => {
     { name: 'Crypto', value: 10 },
   ];
 
-  const expensesData = [
-    { category: 'Rent', amount: 1500, budget: 1600 },
-    { category: 'Utilities', amount: 200, budget: 250 },
-    { category: 'Transportation', amount: 300, budget: 350 },
-    { category: 'Healthcare', amount: 150, budget: 200 },
-    { category: 'Company Expenses', amount: 500, budget: 600 },
-    { category: 'Shopping', amount: 400, budget: 300 },
-    { category: 'Savings', amount: 1000, budget: 1000 },
-    { category: 'Investments', amount: 800, budget: 700 },
-  ];
+  const { data: expensesData } = useQuery({
+    queryKey: ['expenses'],
+    // If the query doesn't exist yet, use some default data
+    initialData: [
+      { category: 'Rent', amount: 1500, budget: 1600 },
+      { category: 'Utilities', amount: 200, budget: 250 },
+      { category: 'Transportation', amount: 300, budget: 350 },
+      { category: 'Healthcare', amount: 150, budget: 200 },
+      { category: 'Company Expenses', amount: 500, budget: 600 },
+      { category: 'Shopping', amount: 400, budget: 300 },
+      { category: 'Savings', amount: 1000, budget: 1000 },
+      { category: 'Investments', amount: 800, budget: 700 },
+    ],
+  });
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
 
