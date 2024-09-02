@@ -13,10 +13,9 @@ const Budget = () => {
   });
 
   const calculateAfterTaxIncome = (income) => {
-    // This is a simplified tax calculation and should be adjusted for accuracy
-    const federalTaxRate = 0.22; // Assuming 22% federal tax rate
-    const stateTaxRate = 0.05; // Assuming 5% state tax rate
-    const ficaTaxRate = 0.0765; // 7.65% for Social Security and Medicare
+    const federalTaxRate = 0.22;
+    const stateTaxRate = 0.05;
+    const ficaTaxRate = 0.0765;
 
     const federalTax = income * federalTaxRate;
     const stateTax = income * stateTaxRate;
@@ -27,10 +26,10 @@ const Budget = () => {
     const afterTaxMonthly = afterTaxAnnual / 12;
 
     return {
-      monthly: afterTaxMonthly.toFixed(2),
-      federal: federalTax.toFixed(2),
-      state: stateTax.toFixed(2),
-      fica: ficaTax.toFixed(2)
+      monthly: afterTaxMonthly,
+      federal: federalTax,
+      state: stateTax,
+      fica: ficaTax
     };
   };
 
@@ -40,7 +39,17 @@ const Budget = () => {
   }, [annualIncome]);
 
   const handleIncomeChange = (e) => {
-    setAnnualIncome(Number(e.target.value));
+    const value = e.target.value.replace(/[^0-9]/g, '');
+    setAnnualIncome(Number(value));
+  };
+
+  const formatCurrency = (value) => {
+    return value.toLocaleString('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    });
   };
 
   return (
@@ -59,8 +68,8 @@ const Budget = () => {
                 </label>
                 <Input
                   id="annual-income"
-                  type="number"
-                  value={annualIncome}
+                  type="text"
+                  value={formatCurrency(annualIncome)}
                   onChange={handleIncomeChange}
                   className="mt-1"
                 />
@@ -78,10 +87,10 @@ const Budget = () => {
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
-              <p><strong>Monthly After-Tax Income:</strong> ${afterTaxIncome.monthly}</p>
-              <p><strong>Federal Tax (Annual):</strong> ${afterTaxIncome.federal}</p>
-              <p><strong>State Tax (Annual):</strong> ${afterTaxIncome.state}</p>
-              <p><strong>FICA Tax (Annual):</strong> ${afterTaxIncome.fica}</p>
+              <p><strong>Monthly After-Tax Income:</strong> {formatCurrency(afterTaxIncome.monthly)}</p>
+              <p><strong>Federal Tax (Annual):</strong> {formatCurrency(afterTaxIncome.federal)}</p>
+              <p><strong>State Tax (Annual):</strong> {formatCurrency(afterTaxIncome.state)}</p>
+              <p><strong>FICA Tax (Annual):</strong> {formatCurrency(afterTaxIncome.fica)}</p>
             </div>
           </CardContent>
         </Card>
