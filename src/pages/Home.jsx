@@ -1,6 +1,6 @@
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { PieChart, Pie, Cell, ResponsiveContainer } from 'recharts';
+import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 
 const Home = () => {
   const investmentData = [
@@ -11,14 +11,14 @@ const Home = () => {
   ];
 
   const expensesData = [
-    { category: 'Rent', amount: 1500 },
-    { category: 'Utilities', amount: 200 },
-    { category: 'Transportation', amount: 300 },
-    { category: 'Healthcare', amount: 150 },
-    { category: 'Company Expenses', amount: 500 },
-    { category: 'Shopping', amount: 400 },
-    { category: 'Savings', amount: 1000 },
-    { category: 'Investments', amount: 800 },
+    { category: 'Rent', amount: 1500, budget: 1600 },
+    { category: 'Utilities', amount: 200, budget: 250 },
+    { category: 'Transportation', amount: 300, budget: 350 },
+    { category: 'Healthcare', amount: 150, budget: 200 },
+    { category: 'Company Expenses', amount: 500, budget: 600 },
+    { category: 'Shopping', amount: 400, budget: 300 },
+    { category: 'Savings', amount: 1000, budget: 1000 },
+    { category: 'Investments', amount: 800, budget: 700 },
   ];
 
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
@@ -67,12 +67,21 @@ const Home = () => {
             </div>
           </CardContent>
         </Card>
-        <Card>
+        <Card className="md:col-span-2">
           <CardHeader>
-            <CardTitle>Budget Overview</CardTitle>
+            <CardTitle>Expenses vs Budget Comparison</CardTitle>
           </CardHeader>
           <CardContent>
-            <p>Budget details will be displayed here.</p>
+            <ResponsiveContainer width="100%" height={300}>
+              <BarChart data={expensesData}>
+                <XAxis dataKey="category" />
+                <YAxis />
+                <Tooltip />
+                <Legend />
+                <Bar dataKey="amount" fill="#8884d8" name="Actual Expenses" />
+                <Bar dataKey="budget" fill="#82ca9d" name="Budgeted Amount" />
+              </BarChart>
+            </ResponsiveContainer>
           </CardContent>
         </Card>
       </div>
