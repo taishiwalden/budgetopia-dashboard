@@ -31,6 +31,10 @@ const Home = () => {
 
   const totalExpenses = expensesData.reduce((sum, expense) => sum + expense.amount, 0);
 
+  const getExpenseColor = (category) => {
+    return category === 'Savings' || category === 'Investments' ? 'text-green-600' : 'text-red-600';
+  };
+
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
@@ -71,7 +75,9 @@ const Home = () => {
               {expensesData.map((expense, index) => (
                 <div key={index} className="flex justify-between">
                   <span>{expense.category}</span>
-                  <span>${expense.amount.toFixed(2)}</span>
+                  <span className={getExpenseColor(expense.category)}>
+                    ${expense.amount.toFixed(2)}
+                  </span>
                 </div>
               ))}
               <div className="flex justify-between font-bold pt-2 border-t">
