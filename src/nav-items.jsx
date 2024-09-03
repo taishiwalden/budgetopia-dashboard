@@ -1,8 +1,9 @@
-import { HomeIcon, TrendingUpIcon, CreditCardIcon, PieChartIcon } from "lucide-react";
+import { HomeIcon, TrendingUpIcon, CreditCardIcon, PieChartIcon, PiggyBankIcon } from "lucide-react";
 import Home from "./pages/Home.jsx";
 import Investments from "./pages/Investments.jsx";
 import Expenses from "./pages/Expenses.jsx";
 import Budget from "./pages/Budget.jsx";
+import Savings from "./pages/Savings.jsx";
 
 export const navItems = [
   {
@@ -28,5 +29,11 @@ export const navItems = [
     to: "/budget",
     icon: <PieChartIcon className="h-4 w-4" />,
     page: <Budget />,
+  },
+  {
+    title: "Savings",
+    to: "/savings",
+    icon: <PiggyBankIcon className="h-4 w-4" />,
+    page: <Savings />,
   },
 ];

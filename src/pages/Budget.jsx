@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useQueryClient } from "@tanstack/react-query";
 
 const stateTaxRates = {
   'Alabama': 0.05, 'Alaska': 0, 'Arizona': 0.045, 'Arkansas': 0.069, 'California': 0.13,
@@ -30,6 +31,8 @@ const Budget = () => {
     fica: 0
   });
 
+  const queryClient = useQueryClient();
+
   const calculateAfterTaxIncome = (income, state) => {
     const federalTaxRate = 0.22;
     const stateTaxRate = stateTaxRates[state] || 0;
@@ -54,7 +57,8 @@ const Budget = () => {
   useEffect(() => {
     const result = calculateAfterTaxIncome(annualIncome, selectedState);
     setAfterTaxIncome(result);
-  }, [annualIncome, selectedState]);
+    queryClient.setQueryData(['annualIncome'], annualIncome);
+  }, [annualIncome, selectedState, queryClient]);
 
   const handleIncomeChange = (e) => {
     const value = e.target.value;
