@@ -26,8 +26,11 @@ const Savings = () => {
     let months = 12;
 
     switch (timeline) {
-      case 'months':
-        months = 12;
+      case '1month':
+        months = 1;
+        break;
+      case '6months':
+        months = 6;
         break;
       case '1year':
         months = 12;
@@ -35,15 +38,17 @@ const Savings = () => {
       case '2years':
         months = 24;
         break;
-      case '5years':
-        months = 60;
+      case '3years':
+        months = 36;
         break;
     }
 
     for (let i = 0; i < months; i++) {
       total += monthlySavings;
       data.push({
-        period: timeline === 'months' ? `Month ${i + 1}` : `Month ${(i % 12) + 1}, Year ${Math.floor(i / 12) + 1}`,
+        period: timeline === '1month' ? `Week ${Math.floor(i / 7) + 1}` : 
+                 timeline === '6months' ? `Month ${i + 1}` :
+                 `Month ${(i % 12) + 1}, Year ${Math.floor(i / 12) + 1}`,
         savings: total,
       });
     }
@@ -89,10 +94,11 @@ const Savings = () => {
                 <SelectValue placeholder="Select timeline" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="months">Months</SelectItem>
+                <SelectItem value="1month">1 Month</SelectItem>
+                <SelectItem value="6months">6 Months</SelectItem>
                 <SelectItem value="1year">1 Year</SelectItem>
                 <SelectItem value="2years">2 Years</SelectItem>
-                <SelectItem value="5years">5 Years</SelectItem>
+                <SelectItem value="3years">3 Years</SelectItem>
               </SelectContent>
             </Select>
           </div>
@@ -110,7 +116,7 @@ const Savings = () => {
                   angle={-45} 
                   textAnchor="end" 
                   height={70} 
-                  interval={timeline === 'months' ? 0 : 'preserveStartEnd'}
+                  interval={timeline === '1month' ? 0 : 'preserveStartEnd'}
                 />
                 <YAxis />
                 <Tooltip />
