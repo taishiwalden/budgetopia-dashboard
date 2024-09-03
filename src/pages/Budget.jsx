@@ -39,8 +39,10 @@ const Budget = () => {
   }, [annualIncome]);
 
   const handleIncomeChange = (e) => {
-    const value = e.target.value.replace(/[^0-9]/g, '');
-    setAnnualIncome(Number(value));
+    const value = e.target.value;
+    if (value === '' || /^\d+$/.test(value)) {
+      setAnnualIncome(value === '' ? 0 : Number(value));
+    }
   };
 
   const formatCurrency = (value) => {
@@ -69,9 +71,10 @@ const Budget = () => {
                 <Input
                   id="annual-income"
                   type="text"
-                  value={formatCurrency(annualIncome)}
+                  value={annualIncome}
                   onChange={handleIncomeChange}
                   className="mt-1"
+                  placeholder="Enter your annual income"
                 />
               </div>
               <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome))}>
