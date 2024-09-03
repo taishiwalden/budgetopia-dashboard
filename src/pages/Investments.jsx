@@ -29,20 +29,25 @@ const Investments = () => {
       value: (item.value / total) * 100
     }));
     setInvestmentData(normalizedData);
+    updatePortfolioRisk(normalizedData);
   };
 
-  const calculatePortfolioRisk = () => {
-    const totalValue = investmentData.reduce((sum, item) => sum + item.value, 0);
-    const weightedRisk = investmentData.reduce((sum, item) => {
+  const calculatePortfolioRisk = (data) => {
+    const totalValue = data.reduce((sum, item) => sum + item.value, 0);
+    const weightedRisk = data.reduce((sum, item) => {
       return sum + (item.value / totalValue) * item.risk;
     }, 0);
     return weightedRisk;
   };
 
-  useEffect(() => {
-    const risk = calculatePortfolioRisk();
+  const updatePortfolioRisk = (data) => {
+    const risk = calculatePortfolioRisk(data);
     setPortfolioRisk(risk);
-  }, [investmentData]);
+  };
+
+  useEffect(() => {
+    updatePortfolioRisk(investmentData);
+  }, []);
 
   const getRiskLevel = (risk) => {
     if (risk < 3) return 'Very Low';
