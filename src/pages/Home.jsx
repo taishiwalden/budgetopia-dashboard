@@ -15,8 +15,6 @@ const Home = () => {
       { category: 'Healthcare', amount: 150, budget: 200 },
       { category: 'Company Expenses', amount: 500, budget: 600 },
       { category: 'Shopping', amount: 400, budget: 300 },
-      { category: 'Savings', amount: 1000, budget: 1000 },
-      { category: 'Investments', amount: 800, budget: 700 },
     ],
   });
 
