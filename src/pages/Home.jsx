@@ -4,13 +4,8 @@ import { PieChart, Pie, Cell, ResponsiveContainer, BarChart, Bar, XAxis, YAxis, 
 import { useQuery } from "@tanstack/react-query";
 
 const Home = () => {
-  const investmentData = [
-    { name: 'Stocks', value: 40 },
-    { name: 'Bonds', value: 30 },
-    { name: 'Real Estate', value: 20 },
-    { name: 'Crypto', value: 10 },
-  ];
-
+  const currentMonth = new Date().toLocaleString('default', { month: 'long' });
+  
   const { data: expensesData } = useQuery({
     queryKey: ['expenses'],
     initialData: [
@@ -25,7 +20,16 @@ const Home = () => {
     ],
   });
 
+  const investmentData = [
+    { name: 'Stocks', value: 40 },
+    { name: 'Bonds', value: 30 },
+    { name: 'Real Estate', value: 20 },
+    { name: 'Crypto', value: 10 },
+  ];
+
   const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
+
+  const totalExpenses = expensesData.reduce((sum, expense) => sum + expense.amount, 0);
 
   return (
     <div>
@@ -60,16 +64,20 @@ const Home = () => {
         </Card>
         <Card>
           <CardHeader>
-            <CardTitle>Expenses Summary</CardTitle>
+            <CardTitle>Expenses Summary - {currentMonth}</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="space-y-2">
               {expensesData.map((expense, index) => (
                 <div key={index} className="flex justify-between">
                   <span>{expense.category}</span>
-                  <span>${expense.amount}</span>
+                  <span>${expense.amount.toFixed(2)}</span>
                 </div>
               ))}
+              <div className="flex justify-between font-bold pt-2 border-t">
+                <span>Total</span>
+                <span>${totalExpenses.toFixed(2)}</span>
+              </div>
             </div>
           </CardContent>
         </Card>
