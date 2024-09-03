@@ -58,24 +58,24 @@ const Investments = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <h1 className="text-3xl font-bold mb-6">Investments</h1>
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Portfolio Breakdown</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col md:flex-row">
-              <div className="w-full md:w-1/2">
-                <ResponsiveContainer width="100%" height={300}>
+      <Card>
+        <CardHeader>
+          <CardTitle>Portfolio Breakdown</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col md:flex-row">
+            <div className="w-full md:w-1/2 mb-4 md:mb-0">
+              <div className="h-64 sm:h-80">
+                <ResponsiveContainer width="100%" height="100%">
                   <PieChart>
                     <Pie
                       data={investmentData}
                       cx="50%"
                       cy="50%"
-                      innerRadius={60}
-                      outerRadius={80}
+                      innerRadius="40%"
+                      outerRadius="70%"
                       fill="#8884d8"
                       dataKey="value"
                       label={({ name, value }) => `${name} ${value.toFixed(1)}%`}
@@ -87,54 +87,54 @@ const Investments = () => {
                   </PieChart>
                 </ResponsiveContainer>
               </div>
-              <div className="w-full md:w-1/2 mt-4 md:mt-0">
-                {investmentData.map((item, index) => (
-                  <div key={index} className="mb-4">
-                    <label className="block text-sm font-medium text-gray-700">{item.name}</label>
-                    <Input
-                      type="number"
-                      value={item.value}
-                      onChange={(e) => handlePercentageChange(index, e.target.value)}
-                      className="mt-1"
-                    />
-                  </div>
-                ))}
-                <Button onClick={handleUpdateChart} className="mt-4">Update Chart</Button>
-              </div>
             </div>
-          </CardContent>
-        </Card>
-        <Card>
-          <CardHeader>
-            <CardTitle>Portfolio Risk Assessment</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-lg font-semibold">Risk Score</h3>
-                <Progress value={portfolioRisk * 10} className="w-full" />
-                <p className="mt-2">
-                  {portfolioRisk.toFixed(2)} / 10 - {getRiskLevel(portfolioRisk)}
-                </p>
-              </div>
-              <div>
-                <h3 className="text-lg font-semibold">Risk Breakdown</h3>
-                <ul className="list-disc list-inside">
-                  {investmentData.map((item, index) => (
-                    <li key={index}>
-                      {item.name}: {item.risk}/10 (Weight: {item.value.toFixed(1)}%)
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <p className="text-sm text-gray-600">
-                This risk assessment is based on the asset allocation and individual risk scores of each investment type.
-                A higher score indicates a higher level of risk.
+            <div className="w-full md:w-1/2 md:pl-4">
+              {investmentData.map((item, index) => (
+                <div key={index} className="mb-4">
+                  <label className="block text-sm font-medium text-gray-700 mb-1">{item.name}</label>
+                  <Input
+                    type="number"
+                    value={item.value}
+                    onChange={(e) => handlePercentageChange(index, e.target.value)}
+                    className="w-full"
+                  />
+                </div>
+              ))}
+              <Button onClick={handleUpdateChart} className="w-full">Update Chart</Button>
+            </div>
+          </div>
+        </CardContent>
+      </Card>
+      <Card>
+        <CardHeader>
+          <CardTitle>Portfolio Risk Assessment</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Risk Score</h3>
+              <Progress value={portfolioRisk * 10} className="w-full" />
+              <p className="mt-2">
+                {portfolioRisk.toFixed(2)} / 10 - {getRiskLevel(portfolioRisk)}
               </p>
             </div>
-          </CardContent>
-        </Card>
-      </div>
+            <div>
+              <h3 className="text-lg font-semibold mb-2">Risk Breakdown</h3>
+              <ul className="list-disc list-inside">
+                {investmentData.map((item, index) => (
+                  <li key={index}>
+                    {item.name}: {item.risk}/10 (Weight: {item.value.toFixed(1)}%)
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <p className="text-sm text-gray-600">
+              This risk assessment is based on the asset allocation and individual risk scores of each investment type.
+              A higher score indicates a higher level of risk.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };

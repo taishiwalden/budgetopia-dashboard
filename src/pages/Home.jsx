@@ -13,7 +13,6 @@ const Home = () => {
 
   const { data: expensesData } = useQuery({
     queryKey: ['expenses'],
-    // If the query doesn't exist yet, use some default data
     initialData: [
       { category: 'Rent', amount: 1500, budget: 1600 },
       { category: 'Utilities', amount: 200, budget: 250 },
@@ -31,30 +30,32 @@ const Home = () => {
   return (
     <div>
       <h1 className="text-3xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Investment Overview</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={200}>
-              <PieChart>
-                <Pie
-                  data={investmentData}
-                  cx="50%"
-                  cy="50%"
-                  innerRadius={60}
-                  outerRadius={80}
-                  fill="#8884d8"
-                  dataKey="value"
-                  label
-                >
-                  {investmentData.map((entry, index) => (
-                    <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-                  ))}
-                </Pie>
-              </PieChart>
-            </ResponsiveContainer>
+            <div className="h-64 sm:h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={investmentData}
+                    cx="50%"
+                    cy="50%"
+                    innerRadius="40%"
+                    outerRadius="70%"
+                    fill="#8884d8"
+                    dataKey="value"
+                    label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                  >
+                    {investmentData.map((entry, index) => (
+                      <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                    ))}
+                  </Pie>
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
         <Card>
@@ -72,21 +73,23 @@ const Home = () => {
             </div>
           </CardContent>
         </Card>
-        <Card className="md:col-span-2">
+        <Card>
           <CardHeader>
             <CardTitle>Expenses vs Budget Comparison</CardTitle>
           </CardHeader>
           <CardContent>
-            <ResponsiveContainer width="100%" height={300}>
-              <BarChart data={expensesData}>
-                <XAxis dataKey="category" />
-                <YAxis />
-                <Tooltip />
-                <Legend />
-                <Bar dataKey="amount" fill="#8884d8" name="Actual Expenses" />
-                <Bar dataKey="budget" fill="#82ca9d" name="Budgeted Amount" />
-              </BarChart>
-            </ResponsiveContainer>
+            <div className="h-64 sm:h-80">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={expensesData}>
+                  <XAxis dataKey="category" tick={{ fontSize: 12 }} interval={0} angle={-45} textAnchor="end" height={70} />
+                  <YAxis />
+                  <Tooltip />
+                  <Legend />
+                  <Bar dataKey="amount" fill="#8884d8" name="Actual Expenses" />
+                  <Bar dataKey="budget" fill="#82ca9d" name="Budgeted Amount" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
       </div>

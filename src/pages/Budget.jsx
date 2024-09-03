@@ -77,66 +77,64 @@ const Budget = () => {
   };
 
   return (
-    <div>
+    <div className="space-y-6">
       <h1 className="text-3xl font-bold mb-6">Budget</h1>
-      <div className="space-y-6">
-        <Card>
-          <CardHeader>
-            <CardTitle>Income Information</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="annual-income" className="block text-sm font-medium text-gray-700">
-                  Annual Income
-                </label>
-                <Input
-                  id="annual-income"
-                  type="text"
-                  value={annualIncome}
-                  onChange={handleIncomeChange}
-                  className="mt-1"
-                  placeholder="Enter your annual income"
-                />
-              </div>
-              <div>
-                <label htmlFor="state-select" className="block text-sm font-medium text-gray-700">
-                  State
-                </label>
-                <Select onValueChange={handleStateChange} value={selectedState}>
-                  <SelectTrigger className="w-full mt-1">
-                    <SelectValue placeholder="Select your state" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {Object.keys(stateTaxRates).sort().map((state) => (
-                      <SelectItem key={state} value={state}>
-                        {state}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-              <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome, selectedState))}>
-                Calculate After-Tax Income
-              </Button>
+      <Card>
+        <CardHeader>
+          <CardTitle>Income Information</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-4">
+            <div>
+              <label htmlFor="annual-income" className="block text-sm font-medium text-gray-700 mb-1">
+                Annual Income
+              </label>
+              <Input
+                id="annual-income"
+                type="text"
+                value={annualIncome}
+                onChange={handleIncomeChange}
+                className="w-full"
+                placeholder="Enter your annual income"
+              />
             </div>
-          </CardContent>
-        </Card>
+            <div>
+              <label htmlFor="state-select" className="block text-sm font-medium text-gray-700 mb-1">
+                State
+              </label>
+              <Select onValueChange={handleStateChange} value={selectedState}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Select your state" />
+                </SelectTrigger>
+                <SelectContent>
+                  {Object.keys(stateTaxRates).sort().map((state) => (
+                    <SelectItem key={state} value={state}>
+                      {state}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome, selectedState))} className="w-full">
+              Calculate After-Tax Income
+            </Button>
+          </div>
+        </CardContent>
+      </Card>
 
-        <Card>
-          <CardHeader>
-            <CardTitle>After-Tax Income Breakdown</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-2">
-              <p><strong>Monthly After-Tax Income:</strong> {formatCurrency(afterTaxIncome.monthly)}</p>
-              <p><strong>Federal Tax (Annual):</strong> {formatCurrency(afterTaxIncome.federal)}</p>
-              <p><strong>State Tax (Annual):</strong> {formatCurrency(afterTaxIncome.state)}</p>
-              <p><strong>FICA Tax (Annual):</strong> {formatCurrency(afterTaxIncome.fica)}</p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>After-Tax Income Breakdown</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="space-y-2">
+            <p><strong>Monthly After-Tax Income:</strong> {formatCurrency(afterTaxIncome.monthly)}</p>
+            <p><strong>Federal Tax (Annual):</strong> {formatCurrency(afterTaxIncome.federal)}</p>
+            <p><strong>State Tax (Annual):</strong> {formatCurrency(afterTaxIncome.state)}</p>
+            <p><strong>FICA Tax (Annual):</strong> {formatCurrency(afterTaxIncome.fica)}</p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 };
