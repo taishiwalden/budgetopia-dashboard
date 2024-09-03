@@ -5,12 +5,19 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const stateTaxRates = {
-  'California': 0.13,
-  'Texas': 0,
-  'New York': 0.11,
-  'Florida': 0,
-  'Illinois': 0.0495,
-  // Add more states as needed
+  'Alabama': 0.05, 'Alaska': 0, 'Arizona': 0.045, 'Arkansas': 0.069, 'California': 0.13,
+  'Colorado': 0.0455, 'Connecticut': 0.0699, 'Delaware': 0.066, 'Florida': 0,
+  'Georgia': 0.0575, 'Hawaii': 0.11, 'Idaho': 0.058, 'Illinois': 0.0495,
+  'Indiana': 0.0323, 'Iowa': 0.0853, 'Kansas': 0.057, 'Kentucky': 0.05,
+  'Louisiana': 0.0425, 'Maine': 0.0715, 'Maryland': 0.0575, 'Massachusetts': 0.05,
+  'Michigan': 0.0425, 'Minnesota': 0.0985, 'Mississippi': 0.05, 'Missouri': 0.054,
+  'Montana': 0.069, 'Nebraska': 0.0684, 'Nevada': 0, 'New Hampshire': 0.05,
+  'New Jersey': 0.1075, 'New Mexico': 0.059, 'New York': 0.109, 'North Carolina': 0.0525,
+  'North Dakota': 0.029, 'Ohio': 0.0399, 'Oklahoma': 0.05, 'Oregon': 0.099,
+  'Pennsylvania': 0.0307, 'Rhode Island': 0.0599, 'South Carolina': 0.07,
+  'South Dakota': 0, 'Tennessee': 0, 'Texas': 0, 'Utah': 0.0495, 'Vermont': 0.0875,
+  'Virginia': 0.0575, 'Washington': 0, 'West Virginia': 0.065, 'Wisconsin': 0.0765,
+  'Wyoming': 0
 };
 
 const Budget = () => {
@@ -25,7 +32,7 @@ const Budget = () => {
 
   const calculateAfterTaxIncome = (income, state) => {
     const federalTaxRate = 0.22;
-    const stateTaxRate = stateTaxRates[state] || 0.05; // Default to 5% if state not found
+    const stateTaxRate = stateTaxRates[state] || 0;
     const ficaTaxRate = 0.0765;
 
     const federalTax = income * federalTaxRate;
@@ -101,7 +108,7 @@ const Budget = () => {
                     <SelectValue placeholder="Select your state" />
                   </SelectTrigger>
                   <SelectContent>
-                    {Object.keys(stateTaxRates).map((state) => (
+                    {Object.keys(stateTaxRates).sort().map((state) => (
                       <SelectItem key={state} value={state}>
                         {state}
                       </SelectItem>
