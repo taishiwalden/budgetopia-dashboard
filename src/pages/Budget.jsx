@@ -2,9 +2,20 @@ import React, { useState, useEffect } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+
+const stateTaxRates = {
+  'California': 0.13,
+  'Texas': 0,
+  'New York': 0.11,
+  'Florida': 0,
+  'Illinois': 0.0495,
+  // Add more states as needed
+};
 
 const Budget = () => {
   const [annualIncome, setAnnualIncome] = useState(50000);
+  const [selectedState, setSelectedState] = useState('California');
   const [afterTaxIncome, setAfterTaxIncome] = useState({
     monthly: 0,
     federal: 0,
@@ -12,9 +23,9 @@ const Budget = () => {
     fica: 0
   });
 
-  const calculateAfterTaxIncome = (income) => {
+  const calculateAfterTaxIncome = (income, state) => {
     const federalTaxRate = 0.22;
-    const stateTaxRate = 0.05;
+    const stateTaxRate = stateTaxRates[state] || 0.05; // Default to 5% if state not found
     const ficaTaxRate = 0.0765;
 
     const federalTax = income * federalTaxRate;
@@ -34,15 +45,19 @@ const Budget = () => {
   };
 
   useEffect(() => {
-    const result = calculateAfterTaxIncome(annualIncome);
+    const result = calculateAfterTaxIncome(annualIncome, selectedState);
     setAfterTaxIncome(result);
-  }, [annualIncome]);
+  }, [annualIncome, selectedState]);
 
   const handleIncomeChange = (e) => {
     const value = e.target.value;
     if (value === '' || /^\d+$/.test(value)) {
       setAnnualIncome(value === '' ? 0 : Number(value));
     }
+  };
+
+  const handleStateChange = (value) => {
+    setSelectedState(value);
   };
 
   const formatCurrency = (value) => {
@@ -77,7 +92,24 @@ const Budget = () => {
                   placeholder="Enter your annual income"
                 />
               </div>
-              <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome))}>
+              <div>
+                <label htmlFor="state-select" className="block text-sm font-medium text-gray-700">
+                  State
+                </label>
+                <Select onValueChange={handleStateChange} value={selectedState}>
+                  <SelectTrigger className="w-full mt-1">
+                    <SelectValue placeholder="Select your state" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {Object.keys(stateTaxRates).map((state) => (
+                      <SelectItem key={state} value={state}>
+                        {state}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+              <Button onClick={() => setAfterTaxIncome(calculateAfterTaxIncome(annualIncome, selectedState))}>
                 Calculate After-Tax Income
               </Button>
             </div>
